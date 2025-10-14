@@ -1,0 +1,33 @@
+{
+  "name": "cms-analytics-dashboard-shared",
+  "version": "1.0.0",
+  "description": "Shared code for the CMS Analytics Dashboard project",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.0.0",
+    "jest": "^27.0.0",
+    "@types/jest": "^27.0.0",
+    "ts-jest": "^27.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/cms-analytics-dashboard.git"
+  },
+  "keywords": [
+    "cms",
+    "analytics",
+    "dashboard",
+    "multi-tenant"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/cms-analytics-dashboard/issues"
+  },
+  "homepage": "https://github.com/yourusername/cms-analytics-dashboard#readme"
+}
