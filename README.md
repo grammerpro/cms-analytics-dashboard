@@ -106,7 +106,7 @@ cms-analytics-dashboard/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/cms-analytics-dashboard.git
+git clone https://github.com/grammerpro/cms-analytics-dashboard.git
 cd cms-analytics-dashboard
 ```
 
@@ -298,7 +298,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- Your Name - [GitHub Profile](https://github.com/yourusername)
+- grammerpro - [GitHub Profile](https://github.com/grammerpro)
 
 ## 🙏 Acknowledgments
 
