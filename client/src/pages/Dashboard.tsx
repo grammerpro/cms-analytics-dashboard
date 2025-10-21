@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import MetricCard from '../components/analytics/MetricCard';
 import Chart from '../components/analytics/Chart';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import Tooltip from '../components/common/Tooltip';
+import toast from 'react-hot-toast';
 
 const Dashboard: React.FC = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    
+    useEffect(() => {
+        // Simulate API call
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1000);
+    }, []);
+
     const sampleData = [
         { name: 'Jan', value: 400 },
         { name: 'Feb', value: 300 },
@@ -11,6 +23,18 @@ const Dashboard: React.FC = () => {
         { name: 'May', value: 500 },
         { name: 'Jun', value: 750 },
     ];
+
+    const handleExport = () => {
+        toast.success('Report exported successfully! 📊');
+    };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <LoadingSpinner size="lg" text="Loading dashboard..." />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -21,9 +45,11 @@ const Dashboard: React.FC = () => {
                         Welcome back! Here's what's happening with your analytics today.
                     </p>
                 </div>
-                <button className="btn-primary">
-                    📥 Export Report
-                </button>
+                <Tooltip content="Export analytics report to CSV">
+                    <button className="btn-primary" onClick={handleExport}>
+                        📥 Export Report
+                    </button>
+                </Tooltip>
             </div>
 
             {/* Metrics Grid */}

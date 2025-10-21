@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
 import Content from './pages/Content';
 import Settings from './pages/Settings';
+import NotFound from './pages/NotFound';
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -32,9 +33,33 @@ const App: React.FC = () => {
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/content" element={<Content />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>
-          <Toaster position="top-right" />
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+              },
+              success: {
+                duration: 3000,
+                iconTheme: {
+                  primary: '#10B981',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                duration: 4000,
+                iconTheme: {
+                  primary: '#EF4444',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
         </Router>
       </QueryClientProvider>
     </Provider>

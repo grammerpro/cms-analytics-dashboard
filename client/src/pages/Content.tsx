@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
+import ConfirmDialog from '../components/common/ConfirmDialog';
+import LoadingSpinner from '../components/common/LoadingSpinner';
+import Tooltip from '../components/common/Tooltip';
+import { formatFriendlyDate, formatDateTime } from '../utils/dateFormatter';
 
 interface ContentItem {
   id: number;
@@ -10,23 +14,63 @@ interface ContentItem {
 }
 
 const Content: React.FC = () => {
-    const [contentItems] = useState<ContentItem[]>([
+    const [contentItems, setContentItems] = useState<ContentItem[]>([
         { id: 1, title: 'Getting Started Guide', status: 'published', author: 'John Doe', lastModified: '2024-01-15' },
         { id: 2, title: 'API Documentation', status: 'draft', author: 'Jane Smith', lastModified: '2024-01-14' },
         { id: 3, title: 'User Manual', status: 'published', author: 'Bob Wilson', lastModified: '2024-01-13' },
     ]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; itemId: number | null }>({
+        isOpen: false,
+        itemId: null,
+    });
 
     const handlePublish = (id: number) => {
-        toast.success('Content published successfully!');
+        setIsLoading(true);
+        setTimeout(() => {
+            setContentItems(items =>
+                items.map(item =>
+                    item.id === id ? { ...item, status: 'published' as const } : item
+                )
+            );
+            setIsLoading(false);
+            toast.success('Content published successfully! 🎉', {
+                duration: 3000,
+            });
+        }, 500);
     };
 
     const handleEdit = (id: number) => {
         toast('Edit feature coming soon!', { icon: '✏️' });
     };
 
-    const handleDelete = (id: number) => {
-        toast.error('Content deleted');
+    const confirmDelete = (id: number) => {
+        setDeleteDialog({ isOpen: true, itemId: id });
     };
+
+    const handleDelete = () => {
+        if (deleteDialog.itemId) {
+            setIsLoading(true);
+            setTimeout(() => {
+                setContentItems(items => items.filter(item => item.id !== deleteDialog.itemId));
+                setIsLoading(false);
+                setDeleteDialog({ isOpen: false, itemId: null });
+                toast.success('Content deleted successfully');
+            }, 500);
+        }
+    };
+
+    const handleCancelDelete = () => {
+        setDeleteDialog({ isOpen: false, itemId: null });
+    };
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[60vh]">
+                <LoadingSpinner size="lg" text="Processing..." />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -101,36 +145,58 @@ const Content: React.FC = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     {item.author}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {item.lastModified}
+                                <td className="px-6 py-4 whitespace-nowrap">
+                                    <Tooltip content={formatDateTime(item.lastModified)}>
+                                        <span className="text-sm text-gray-500">
+                                            {formatFriendlyDate(item.lastModified)}
+                                        </span>
+                                    </Tooltip>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button 
-                                        onClick={() => handleEdit(item.id)}
-                                        className="text-primary-600 hover:text-primary-900 mr-3"
-                                    >
-                                        Edit
-                                    </button>
-                                    {item.status === 'draft' && (
+                                    <Tooltip content="Edit content">
                                         <button 
-                                            onClick={() => handlePublish(item.id)}
-                                            className="text-green-600 hover:text-green-900 mr-3"
+                                            onClick={() => handleEdit(item.id)}
+                                            className="text-primary-600 hover:text-primary-900 mr-3"
                                         >
-                                            Publish
+                                            Edit
                                         </button>
+                                    </Tooltip>
+                                    {item.status === 'draft' && (
+                                        <Tooltip content="Publish to make it live">
+                                            <button 
+                                                onClick={() => handlePublish(item.id)}
+                                                className="text-green-600 hover:text-green-900 mr-3"
+                                            >
+                                                Publish
+                                            </button>
+                                        </Tooltip>
                                     )}
-                                    <button 
-                                        onClick={() => handleDelete(item.id)}
-                                        className="text-red-600 hover:text-red-900"
-                                    >
-                                        Delete
-                                    </button>
+                                    <Tooltip content="Delete permanently">
+                                        <button 
+                                            onClick={() => confirmDelete(item.id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            Delete
+                                        </button>
+                                    </Tooltip>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
+
+            {/* Confirmation Dialog */}
+            <ConfirmDialog
+                isOpen={deleteDialog.isOpen}
+                title="Delete Content"
+                message="Are you sure you want to delete this content? This action cannot be undone."
+                confirmText="Delete"
+                cancelText="Cancel"
+                type="danger"
+                onConfirm={handleDelete}
+                onCancel={handleCancelDelete}
+            />
         </div>
     );
 };
