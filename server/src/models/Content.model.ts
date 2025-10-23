@@ -3,7 +3,7 @@ export class Content {
     title: string;
     body: string;
     tenantId: string;
-    status: 'draft' | 'published';
+    status: 'draft' | 'published' | 'archived';
     metadata?: Record<string, any>;
     createdBy?: string;
     version: number;
@@ -15,7 +15,7 @@ export class Content {
         title: string, 
         body: string, 
         tenantId: string,
-        status: 'draft' | 'published' = 'draft',
+        status: 'draft' | 'published' | 'archived' = 'draft',
         metadata?: Record<string, any>,
         createdBy?: string
     ) {
