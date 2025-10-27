@@ -6,8 +6,11 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
+    "type-check": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx",
-    "format": "prettier --write ."
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",

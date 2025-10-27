@@ -7,6 +7,26 @@ A full-stack, production-ready Content Management System (CMS) with real-time an
 [![Node.js](https://img.shields.io/badge/Node.js-22.x-green)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.x-lightgrey)](https://expressjs.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3-38bdf8)](https://tailwindcss.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue)](https://www.postgresql.org/)
+
+## ✅ Current Status
+
+**Phase 1: COMPLETE** ✅
+- ✅ Full PostgreSQL database integration
+- ✅ Complete authentication system (login/register)
+- ✅ Protected routes with JWT tokens
+- ✅ User session management
+- ✅ All services migrated to database
+- ✅ Frontend form validation
+- ✅ User menu with logout functionality
+
+**Application Status:** 🟢 Running  
+- Frontend: http://localhost:3000
+- Backend: http://localhost:5001
+- WebSocket: Connected
+
+> 📚 See [QUICK_START.md](QUICK_START.md) for immediate usage  
+> 📖 See [PHASE1_COMPLETED.md](PHASE1_COMPLETED.md) for Phase 1 details
 
 ## 🚀 Features
 
@@ -127,30 +147,30 @@ npm install
 
 ### 3. Environment Configuration
 
-Create a `.env` file in the `server` directory:
+**Server Configuration:**
 
-```env
-# Server Configuration
-PORT=5001
-NODE_ENV=development
+Copy the example environment file and configure:
 
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-change-in-production
-
-# Database Configuration (optional - using in-memory storage by default)
-DATABASE_URL=postgresql://user:password@localhost:5432/cms_analytics_db
-DB_USER=user
-DB_HOST=localhost
-DB_NAME=cms_analytics_db
-DB_PASSWORD=password
-DB_PORT=5432
-
-# Redis Configuration (optional)
-REDIS_URL=redis://localhost:6379
-
-# Client URL
-CLIENT_URL=http://localhost:3000
+```bash
+cd server
+cp .env.example .env
 ```
+
+Then edit `server/.env` with your settings. See `.env.example` for all available options.
+
+**Client Configuration** (optional):
+
+```bash
+cd client
+cp .env.example .env
+```
+
+Key environment variables:
+- `PORT` - Server port (default: 5001)
+- `JWT_SECRET` - Secret key for JWT tokens (required for production)
+- `DATABASE_URL` - PostgreSQL connection string
+- `REDIS_URL` - Redis connection string (optional)
+- `CLIENT_URL` - Frontend URL for CORS (default: http://localhost:3000)
 
 ### 4. Run Development Servers
 
@@ -176,7 +196,8 @@ docker-compose up
 
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:5001
-- **Health Check**: http://localhost:5001/health
+- **Health Check**: http://localhost:5001/api/health
+- **API Documentation**: See [API Endpoints](#-api-endpoints) section below
 
 ## 🔨 Build for Production
 
@@ -228,6 +249,11 @@ npx serve dist -p 3000
 
 ### Analytics
 - `GET /api/analytics/:tenantId` - Get analytics for tenant
+
+### Health & Monitoring
+- `GET /api/health` - Health check with database status
+- `GET /api/health/ready` - Readiness probe (K8s compatible)
+- `GET /api/health/live` - Liveness probe (K8s compatible)
 - `POST /api/analytics` - Create analytics data
 - `PUT /api/analytics/:id` - Update analytics
 - `DELETE /api/analytics/:id` - Delete analytics
@@ -271,16 +297,25 @@ npm run test:coverage
 ## 📦 Scripts
 
 ### Client
-- `npm run dev` - Start development server
+- `npm run dev` - Start development server with HMR
 - `npm run build` - Build for production
-- `npm run preview` - Preview production build
+- `npm run serve` - Preview production build
+- `npm run type-check` - Check TypeScript types without building
 - `npm run lint` - Run ESLint
+- `npm run lint:fix` - Run ESLint with auto-fix
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
 
 ### Server
 - `npm run dev` - Start development server with hot reload
 - `npm run build` - Compile TypeScript to JavaScript
 - `npm start` - Run production server
+- `npm run type-check` - Check TypeScript types without building
 - `npm run lint` - Run ESLint
+- `npm run lint:fix` - Run ESLint with auto-fix
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
+- `npm run test:health` - Quick health check (requires server running)
 
 ## 🤝 Contributing
 

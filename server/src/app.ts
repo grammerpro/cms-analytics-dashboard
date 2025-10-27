@@ -6,6 +6,7 @@ import { authRoutes } from './routes/auth.routes';
 import { tenantRoutes } from './routes/tenant.routes';
 import { contentRoutes } from './routes/content.routes';
 import { analyticsRoutes } from './routes/analytics.routes';
+import { healthRoutes } from './routes/health.routes';
 import errorHandler from './middleware/errorHandler.middleware';
 import { config } from './config/env.config';
 
@@ -18,6 +19,7 @@ app.use(urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Routes
+app.use('/api/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/tenant', tenantRoutes);
 app.use('/api/content', contentRoutes);

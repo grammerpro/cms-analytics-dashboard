@@ -6,8 +6,12 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
+    "type-check": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:health": "node -e \"require('http').get('http://localhost:5001/api/health', res => { let data = ''; res.on('data', d => data += d); res.on('end', () => console.log(JSON.parse(data))); })\""
   },
   "dependencies": {
     "@types/ioredis": "^4.28.10",
